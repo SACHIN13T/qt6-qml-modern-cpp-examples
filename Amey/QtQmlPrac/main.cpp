@@ -1,19 +1,30 @@
+// main.cpp
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QObject>
-#include "applicatiodata.h"
 #include <QQmlContext>
+#include <QQuickPaintedItem>
+#include <QPainter>
+#include "BackendService.h"
+#include "ExpenseItem.h"
+#include "AppSettings.h"
+#include "ExpenseCircleItem.h"
 
-
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
-
-    QQuickView view;
-
-    ApplicatioData data;
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("applicationData", &data);
+
+    BackendService backend;
+    engine.rootContext()->setContextProperty("backendService", &backend);
+
+    qmlRegisterType<ExpenseItem>("App.Models", 1, 0, "ExpenseItem");
+
+    qmlRegisterSingletonType<AppSettings>("App.Config", 1, 0, "AppSettings",
+                                          [](QQmlEngine*, QJSEngine*) -> QObject* {
+                                              return new AppSettings();
+                                          });
+
+    qmlRegisterType<ExpenseCircleItem>("App.Visuals", 1, 0, "ExpenseCircle");
+    \
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
@@ -21,6 +32,5 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     engine.loadFromModule("QtQmlPrac", "Main");
-
     return app.exec();
 }
