@@ -4,6 +4,8 @@ import App.Models 1.0
 import App.Config 1.0
 import App.Visuals 1.0
 
+//Just to test
+
 ApplicationWindow {
     visible: true
     width: 400
