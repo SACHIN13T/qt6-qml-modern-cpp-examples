@@ -28,7 +28,7 @@ qt_add_qml_module(appQtQmlPrac
         QML_FILES ExpenseListView.qml
         RESOURCES resources.qrc
 )
-
+qt6_add_resources(QT_RESOURCES resources.qrc)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
