@@ -8,6 +8,7 @@
 #include "ExpenseItem.h"
 #include "AppSettings.h"
 #include "ExpenseCircleItem.h"
+#include "expensemodel.h"
 
 int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
@@ -15,6 +16,10 @@ int main(int argc, char *argv[]) {
 
     BackendService backend;
     engine.rootContext()->setContextProperty("backendService", &backend);
+
+    ExpenseModel expenseModel;
+    engine.rootContext()->setContextProperty("expensemodel", &expenseModel);
+    engine.load(QUrl("qrc:/ExpenseListView.qml"));
 
     qmlRegisterType<ExpenseItem>("App.Models", 1, 0, "ExpenseItem");
 
@@ -32,5 +37,7 @@ int main(int argc, char *argv[]) {
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     engine.loadFromModule("QtQmlPrac", "Main");
+
+
     return app.exec();
 }
